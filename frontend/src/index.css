@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #F7F9FC;
+  color: #1E293B;
+}
+
+.font-display { font-family: "Sora", sans-serif; }
+.font-mono-price { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; }
+
+* { scrollbar-width: thin; scrollbar-color: #134074 #F7F9FC; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #134074; border-radius: 8px; }
+
+:focus-visible {
+  outline: 2px solid #F2B705;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
