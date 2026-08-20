@@ -32,11 +32,11 @@ const ProductCard = ({ product }) => {
       to={`/product/${product.slug}`}
       className="group bg-white rounded-2xl border border-slate-100 shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
     >
-      <div className="relative aspect-square overflow-hidden bg-slate-50">
+      <div className="relative aspect-square overflow-hidden bg-white flex items-center justify-center p-3">
         <SafeImage
           src={product.images?.[0]}
           alt={product.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-500"
         />
         <button
           onClick={toggleWishlist}

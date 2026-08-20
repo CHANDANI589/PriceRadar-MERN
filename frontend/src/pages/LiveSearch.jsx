@@ -84,8 +84,8 @@ const LiveSearch = () => {
             to={`/live-product/${encodeURIComponent(r.productId)}?title=${encodeURIComponent(r.title)}`}
             className="bg-white rounded-2xl border border-slate-100 shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
           >
-            <div className="aspect-square bg-slate-50">
-              <SafeImage src={r.image} alt={r.title} className="w-full h-full object-cover" />
+            <div className="aspect-square bg-white flex items-center justify-center p-4">
+              <SafeImage src={r.image} alt={r.title} className="max-w-full max-h-full w-auto h-auto object-contain" />
             </div>
             <div className="p-3 flex flex-col gap-1 flex-1">
               <span className="text-[11px] text-slate-400 uppercase truncate">{r.source}</span>
