@@ -11,12 +11,32 @@ module.exports = (passport) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          // Only accept verified Google email addresses
-          if (!profile.emails || !profile.emails[0] || !profile.emails[0].verified) {
-            return done(null, false, { message: "Google email address is not verified" });
+          // Passport Google OAuth2 provides emails as [{ value: "...", verified: true }]
+          // Use profile.emails[0].value (NOT .email) for the email address.
+          const emailEntry = profile.emails && profile.emails[0] ? profile.emails[0] : null;
+          const email = emailEntry ? String(emailEntry.value).toLowerCase() : null;
+
+          // Google communicates email verification via profile._json.email_verified.
+          // profile.emails[0].verified may be missing even for verified accounts.
+          let emailVerified = false;
+          if (
+            profile._json &&
+            Object.prototype.hasOwnProperty.call(profile._json, "email_verified")
+          ) {
+            emailVerified = profile._json.email_verified === true || profile._json.email_verified === "true";
+          } else if (emailEntry) {
+            emailVerified = emailEntry.verified === true;
           }
 
-          const email = profile.emails[0].email.toLowerCase();
+          // Reject safely without crashing when Google does not provide a verified email.
+          if (!email || !emailVerified) {
+            console.error(
+              "Google OAuth: missing or unverified email",
+              { hasEmail: Boolean(email), emailVerified, hasProfileJson: Boolean(profile._json) }
+            );
+            return done(null, false, { message: "Google email address is not verified or not available" });
+          }
+
           const googleId = profile.id;
 
           // 1. Find existing user by Google ID
@@ -47,6 +67,8 @@ module.exports = (passport) => {
 
           return done(null, user);
         } catch (err) {
+          // Safe error logging: never log OAuth tokens, client secrets, or passwords.
+          console.error("Google OAuth strategy error:", err.message);
           return done(err, false);
         }
       }
