@@ -4,6 +4,33 @@ import { useAuth } from "../context/AuthContext";
 import { Radar } from "lucide-react";
 import toast from "react-hot-toast";
 
+const GOOGLE_AUTH_URL = `${(import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/api$/, "")}/api/auth/google`;
+
+const GoogleButton = () => (
+  <a
+    href={GOOGLE_AUTH_URL}
+    className="w-full flex items-center justify-center gap-2 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold py-2.5 rounded-lg transition-colors text-sm"
+  >
+    <img
+      src="https://auth.gstatic.com/gstatic/images/btn/google_signin_dark_normal.webp"
+      alt="Google"
+      width={18}
+      height={18}
+      style={{ display: "block" }}
+    />
+    Continue with Google
+  </a>
+);
+
+const Divider = () => (
+  <div className="relative text-slate-400 text-xs font-semibold mb-4 mt-2">
+    <span className="px-2 bg-white">Or continue with</span>
+    <div className="absolute inset-0 flex items-center">
+      <span className="w-full border-t border-slate-200"></span>
+    </div>
+  </div>
+);
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +62,9 @@ const Login = () => {
         </div>
         <h1 className="font-display font-bold text-xl text-navy text-center mb-1">Welcome back</h1>
         <p className="text-sm text-slate-500 text-center mb-6">Login to track deals & manage orders</p>
+
+        <GoogleButton />
+        <Divider />
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const { generateToken, setTokenCookie } = require("../utils/generateToken");
+const isProduction = process.env.NODE_ENV === "production";
 
 // @route POST /api/auth/register
 exports.register = async (req, res) => {
@@ -47,11 +48,33 @@ exports.login = async (req, res) => {
 
 // @route POST /api/auth/logout
 exports.logout = async (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+  });
   res.json({ success: true, message: "Logged out successfully" });
 };
 
 // @route GET /api/auth/me
 exports.getMe = async (req, res) => {
   res.json({ success: true, user: req.user });
+};
+
+// @route GET /api/auth/google/callback (handled after Passport strategy)
+exports.googleAuthCallback = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.redirect(`${process.env.CLIENT_URL || "http://localhost:5173"}/login?error=google_auth_failed`);
+    }
+
+    const token = generateToken(req.user._id);
+    setTokenCookie(res, token);
+
+    const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    return res.redirect(`${frontendUrl}/?google_auth=success`);
+  } catch (err) {
+    const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    return res.redirect(`${frontendUrl}/login?error=google_auth_failed`);
+  }
 };

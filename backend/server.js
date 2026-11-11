@@ -11,6 +11,7 @@ const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const shoppingRoutes = require("./routes/shoppingRoutes");
+const passport = require("passport");
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use(
 // ===============================
 app.use(express.json());
 app.use(cookieParser());
+app.use(passport.initialize());
 app.use(morgan("dev"));
 
 // ===============================

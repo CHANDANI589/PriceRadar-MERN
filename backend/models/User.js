@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    password: { type: String, required: true, minlength: 6, select: false },
+    password: { type: String, minlength: 6, select: false },
+    googleId: { type: String, sparse: true, unique: true, default: null },
     role: { type: String, enum: ["user", "admin"], default: "user" },
     avatar: { type: String, default: "" },
     addresses: [addressSchema],
@@ -43,12 +44,13 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") || !this.password) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
 userSchema.methods.comparePassword = function (candidate) {
+  if (!this.password) return false;
   return bcrypt.compare(candidate, this.password);
 };
 

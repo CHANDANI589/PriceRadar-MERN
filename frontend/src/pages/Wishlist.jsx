@@ -9,7 +9,15 @@ const Wishlist = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/users/wishlist").then(({ data }) => { setItems(data.wishlist); setLoading(false); });
+    api.get("/users/wishlist")
+      .then(({ data }) => { setItems(data.wishlist); setLoading(false); })
+      .catch((err) => {
+        if (err.response?.status === 401) {
+          setLoading(false);
+          return;
+        }
+        setLoading(false);
+      });
   }, []);
 
   if (loading) return <p className="text-center py-24 text-slate-400">Loading wishlist...</p>;
