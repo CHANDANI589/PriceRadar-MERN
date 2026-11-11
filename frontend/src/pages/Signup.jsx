@@ -12,8 +12,8 @@ const GoogleButton = () => (
     className="w-full flex items-center justify-center gap-2 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold py-2.5 rounded-lg transition-colors text-sm"
   >
     <svg
-      width={18}
-      height={18}
+      width={20}
+      height={20}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
