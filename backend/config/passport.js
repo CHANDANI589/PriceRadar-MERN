@@ -1,6 +1,17 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/User");
 
+// Validate required Google OAuth environment variables at module load time.
+const requiredEnv = ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_CALLBACK_URL"];
+const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+if (missingEnv.length > 0) {
+  console.error(
+    "Google OAuth: missing required environment variables: " +
+      missingEnv.join(", ") +
+      ". Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_CALLBACK_URL in Render."
+  );
+}
+
 module.exports = (passport) => {
   passport.use(
     new GoogleStrategy(
@@ -11,10 +22,20 @@ module.exports = (passport) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
+          // Guard against missing profile or profile.id (prevents crashes).
+          if (!profile || !profile.id) {
+            console.error("Google OAuth: missing profile or profile.id");
+            return done(null, false, { message: "Google authentication failed: invalid profile" });
+          }
+
           // Passport Google OAuth2 provides emails as [{ value: "...", verified: true }]
           // Use profile.emails[0].value (NOT .email) for the email address.
-          const emailEntry = profile.emails && profile.emails[0] ? profile.emails[0] : null;
-          const email = emailEntry ? String(emailEntry.value).toLowerCase() : null;
+          const emailEntry =
+            profile.emails && Array.isArray(profile.emails) && profile.emails[0]
+              ? profile.emails[0]
+              : null;
+          const email =
+            emailEntry && emailEntry.value ? String(emailEntry.value).toLowerCase() : null;
 
           // Google communicates email verification via profile._json.email_verified.
           // profile.emails[0].verified may be missing even for verified accounts.
@@ -23,7 +44,9 @@ module.exports = (passport) => {
             profile._json &&
             Object.prototype.hasOwnProperty.call(profile._json, "email_verified")
           ) {
-            emailVerified = profile._json.email_verified === true || profile._json.email_verified === "true";
+            emailVerified =
+              profile._json.email_verified === true ||
+              profile._json.email_verified === "true";
           } else if (emailEntry) {
             emailVerified = emailEntry.verified === true;
           }

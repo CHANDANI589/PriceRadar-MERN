@@ -11,13 +11,19 @@ const GoogleButton = () => (
     href={GOOGLE_AUTH_URL}
     className="w-full flex items-center justify-center gap-2 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold py-2.5 rounded-lg transition-colors text-sm"
   >
-    <img
-      src="https://auth.gstatic.com/gstatic/images/btn/google_signin_dark_normal.webp"
-      alt="Google"
+    <svg
       width={18}
       height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
       style={{ display: "block" }}
-    />
+    >
+      <path fill="#4285F4" d="M12 23c6.07 0 11-4.93 11-11S18.07 1 12 1 1 5.93 1 13s4.93 11 11 11z" />
+      <path fill="#DB4437" d="M22 12c0-5.52-4.48-10-10-10V1c5.52 0 10 4.48 10 10s-4.48 10-10 10v-2c0-5.52 4.48-10 10-10z" />
+      <path fill="#F4B400" d="M12 1c-1.91 0-3.7.65-5.19 1.78L6.72 2c1.38-.55 2.8-.87 4.29-.87s2.91.32 4.29.87L17.19 2.78c-1.49-1.13-3.28-1.78-5.19-1.78z" />
+      <path fill="#0F9D58" d="M12 23c-2.97 0-5.46-.98-7.28-2.66l3.57-2.77c.98-.66 2.23-1.06 3.71-1.06 2.86 0 5.29 1.93 5.94 4.63H20.4v-2.78c-1.39-1.93-3.67-3.14-6.23-3.14z" />
+    </svg>
     Continue with Google
   </a>
 );
