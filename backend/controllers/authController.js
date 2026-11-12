@@ -65,16 +65,18 @@ exports.getMe = async (req, res) => {
 exports.googleAuthCallback = async (req, res) => {
   try {
     if (!req.user) {
-      return res.redirect(`${process.env.CLIENT_URL || "http://localhost:5173"}/login?error=google_auth_failed`);
+      return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=google_auth_failed`);
     }
 
     const token = generateToken(req.user._id);
     setTokenCookie(res, token);
+    console.log("Google OAuth callback: token cookie set, redirecting to frontend");
 
-    const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    console.log("Google OAuth callback: redirecting to", `${frontendUrl}/?google_auth=success`);
     return res.redirect(`${frontendUrl}/?google_auth=success`);
   } catch (err) {
-    const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
     return res.redirect(`${frontendUrl}/login?error=google_auth_failed`);
   }
 };

@@ -20,7 +20,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchMe();
+    const initAuth = async () => {
+      await fetchMe();
+
+      // Handle return from Google OAuth callback: verify session and clean URL
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("google_auth") === "success") {
+        toast.success("Signed in with Google successfully!");
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    };
+    initAuth();
   }, []);
 
   const login = async (email, password) => {

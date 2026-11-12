@@ -24,14 +24,17 @@ connectDB();
 // CORS
 // ===============================
 const allowedOrigins = [
-  process.env.CLIENT_URL, // deployed frontend (set via Render env var in production)
-  "http://localhost:5173", // local development
+  process.env.FRONTEND_URL,
+  "https://priceradar-frontend.onrender.com",
+  "http://localhost:5173",
 ].filter(Boolean);
 
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 

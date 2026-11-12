@@ -10,9 +10,10 @@ const generateToken = (id) =>
 const setTokenCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
-    secure: isProduction, // true over HTTPS in production, false over HTTP in development
-    sameSite: isProduction ? "none" : "lax", // "none" for cross-site production, "lax" for local dev
+    secure: true, // required for SameSite=none; always send over HTTPS
+    sameSite: "none", // required for cross-site (frontend != backend) cookie inclusion
     maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: "/", // cookie available across the whole backend domain
   });
 };
 

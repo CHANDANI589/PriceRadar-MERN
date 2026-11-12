@@ -3,6 +3,7 @@ const User = require("../models/User");
 
 exports.protect = async (req, res, next) => {
   try {
+    console.log("Auth check - cookie exists:", !!req.cookies?.token, "header exists:", !!req.headers.authorization);
     let token = req.cookies?.token;
     if (!token && req.headers.authorization?.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1];
