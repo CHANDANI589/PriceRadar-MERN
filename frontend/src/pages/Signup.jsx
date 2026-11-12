@@ -11,20 +11,11 @@ const GoogleButton = () => (
     href={GOOGLE_AUTH_URL}
     className="w-full flex items-center justify-center gap-3 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold py-3 rounded-lg transition-colors text-sm"
   >
-    <svg
-      width="24"
-      height="24"
-      minWidth="24px"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ display: "block", minWidth: "24px", flexShrink: 0 }}
-    >
-      <path fill="#4285F4" d="M24 46c12.14 0 22-9.86 22-22S36.14 2 24 2 2 11.86 2 26s9.86 22 22 22z"/>
-      <path fill="#EA4335" d="M44 24c0-11.04-8.96-20-20-20V2c11.04 0 20 8.96 20 20s-8.96 20-20 20v-4c0-11.04 8.96-20 20-20z"/>
-      <path fill="#FBBC05" d="M24 2c-3.82 0-7.4 1.3-10.38 3.56L13.44 4c2.76-1.1 5.6-1.74 8.58-1.74s5.82 .64 8.58 1.74l3.44 1.56c-2.98-2.26-6.56-3.56-10.38-3.56z"/>
-      <path fill="#34A853" d="M24 46c-5.94 0-10.92-1.96-14.56-5.32l7.14-5.54c1.96-1.32 4.46-2.12 7.42-2.12 5.72 0 10.58 3.86 11.88 9.26H40.8v-5.56c-2.78-3.86-7.34-6.28-12.46-6.28z"/>
-    </svg>
+    <img
+      src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+      alt="Google"
+      style={{ width: "20px", height: "20px", objectFit: "contain" }}
+    />
     Continue with Google
   </a>
 );
