@@ -11,6 +11,8 @@ import LiveSearch from "./pages/LiveSearch";
 import LiveProductDetail from "./pages/LiveProductDetail";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
@@ -37,6 +39,8 @@ function App() {
           <Route path="/live-product/:productId" element={<LiveProductDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/cart" element={<Cart />} />
 
           <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Radar } from "lucide-react";
 import toast from "react-hot-toast";
@@ -44,6 +44,17 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Surface Google OAuth result (success/error) returned by the backend callback.
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error === "google_failed" || error === "google_auth_failed") {
+      toast.error("Google sign-up failed. Please try again or sign up with email/password.");
+    } else if (searchParams.get("google_auth") === "success") {
+      toast.success("Signed up with Google successfully!");
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

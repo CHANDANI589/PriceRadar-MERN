@@ -35,7 +35,7 @@ module.exports = (passport) => {
               ? profile.emails[0]
               : null;
           const email =
-            emailEntry && emailEntry.value ? String(emailEntry.value).toLowerCase() : null;
+            emailEntry && emailEntry.value ? String(emailEntry.value).toLowerCase().trim() : null;
 
           // Google communicates email verification via profile._json.email_verified.
           // profile.emails[0].verified may be missing even for verified accounts.
@@ -52,6 +52,7 @@ module.exports = (passport) => {
           }
 
           // Reject safely without crashing when Google does not provide a verified email.
+          // NO email whitelist is applied here: every verified Google account is allowed.
           if (!email || !emailVerified) {
             console.error(
               "Google OAuth: missing or unverified email",
@@ -62,7 +63,7 @@ module.exports = (passport) => {
 
           const googleId = profile.id;
 
-          // 1. Find existing user by Google ID
+          // 1. Find existing user by Google ID (existing Google account)
           let user = await User.findOne({ googleId });
 
           if (!user) {
@@ -70,7 +71,18 @@ module.exports = (passport) => {
             user = await User.findOne({ email });
 
             if (user) {
-              // Link Google account to existing user without creating duplicates
+              // Safety: never hijack an account whose googleId is already bound to a
+              // different Google account. Only link when this user has no googleId yet.
+              if (user.googleId && user.googleId !== googleId) {
+                console.error(
+                  "Google OAuth: email already bound to a different Google account",
+                  { email, existingGoogleId: user.googleId, incomingGoogleId: googleId }
+                );
+                return done(null, false, { message: "This email is already linked to another Google account" });
+              }
+
+              // Link Google account to existing user without creating duplicates.
+              // Password, role, wishlist, addresses and all other account data are preserved.
               user.googleId = googleId;
               if (!user.avatar && profile.photos && profile.photos[0]) {
                 user.avatar = profile.photos[0].value;
@@ -79,10 +91,10 @@ module.exports = (passport) => {
             } else {
               // 3. No existing account — create a new user from Google profile
               user = await User.create({
-                name: profile.displayName || profile.name?.givenName || "Google User",
+                name: (profile.displayName || profile.name?.givenName || "Google User").trim(),
                 email,
                 googleId,
-                password: undefined, // Google users have no password
+                password: undefined, // Google users have no password (never set/overwrite)
                 avatar: profile.photos && profile.photos[0] ? profile.photos[0].value : "",
               });
             }

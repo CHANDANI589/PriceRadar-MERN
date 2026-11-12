@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Radar } from "lucide-react";
 
 const Footer = () => (
@@ -39,8 +40,26 @@ const Footer = () => (
         </p>
       </div>
     </div>
-    <div className="border-t border-white/10 py-4 text-center text-xs">
-      © {new Date().getFullYear()} PriceRadar. Built with the MERN stack.
+    <div className="border-t border-white/10 py-4">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2 text-xs">
+        <div className="flex gap-4 text-white/60">
+          <Link
+            to="/privacy-policy"
+            className="hover:text-white transition-colors"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            to="/terms"
+            className="hover:text-white transition-colors"
+          >
+            Terms of Service
+          </Link>
+        </div>
+        <div className="text-white/70">
+          © {new Date().getFullYear()} PriceRadar. Built with the MERN stack.
+        </div>
+      </div>
     </div>
   </footer>
 );
