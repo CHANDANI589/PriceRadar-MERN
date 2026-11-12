@@ -26,6 +26,10 @@ export const AuthProvider = ({ children }) => {
       // Handle return from Google OAuth callback: verify session and clean URL
       const params = new URLSearchParams(window.location.search);
       if (params.get("google_auth") === "success") {
+        const token = params.get("token");
+        if (token) {
+          localStorage.setItem("token", token);
+        }
         toast.success("Signed in with Google successfully!");
         window.history.replaceState(null, "", window.location.pathname);
       }
@@ -35,6 +39,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
+    localStorage.setItem("token", data.token);
     setUser(data.user);
     toast.success(`Welcome back, ${data.user.name}!`);
     return data.user;
@@ -42,6 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     const { data } = await api.post("/auth/register", { name, email, password });
+    localStorage.setItem("token", data.token);
     setUser(data.user);
     toast.success(`Welcome to PriceRadar, ${data.user.name}!`);
     return data.user;
