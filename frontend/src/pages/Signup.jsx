@@ -9,31 +9,31 @@ const GOOGLE_AUTH_URL = `${(import.meta.env.VITE_API_URL || "http://localhost:50
 const GoogleButton = () => (
   <a
     href={GOOGLE_AUTH_URL}
-    className="w-full flex items-center justify-center gap-2 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold py-2.5 rounded-lg transition-colors text-sm"
+    className="w-full flex items-center justify-center gap-3 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold py-3 rounded-lg transition-colors text-sm"
   >
     <svg
-      width={20}
-      height={20}
-      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      minWidth="24px"
+      viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ display: "block" }}
+      style={{ display: "block", minWidth: "24px", flexShrink: 0 }}
     >
-      <path fill="#4285F4" d="M12 23c6.07 0 11-4.93 11-11S18.07 1 12 1 1 5.93 1 13s4.93 11 11 11z" />
-      <path fill="#DB4437" d="M22 12c0-5.52-4.48-10-10-10V1c5.52 0 10 4.48 10 10s-4.48 10-10 10v-2c0-5.52 4.48-10 10-10z" />
-      <path fill="#F4B400" d="M12 1c-1.91 0-3.7.65-5.19 1.78L6.72 2c1.38-.55 2.8-.87 4.29-.87s2.91.32 4.29.87L17.19 2.78c-1.49-1.13-3.28-1.78-5.19-1.78z" />
-      <path fill="#0F9D58" d="M12 23c-2.97 0-5.46-.98-7.28-2.66l3.57-2.77c.98-.66 2.23-1.06 3.71-1.06 2.86 0 5.29 1.93 5.94 4.63H20.4v-2.78c-1.39-1.93-3.67-3.14-6.23-3.14z" />
+      <path fill="#4285F4" d="M24 46c12.14 0 22-9.86 22-22S36.14 2 24 2 2 11.86 2 26s9.86 22 22 22z"/>
+      <path fill="#EA4335" d="M44 24c0-11.04-8.96-20-20-20V2c11.04 0 20 8.96 20 20s-8.96 20-20 20v-4c0-11.04 8.96-20 20-20z"/>
+      <path fill="#FBBC05" d="M24 2c-3.82 0-7.4 1.3-10.38 3.56L13.44 4c2.76-1.1 5.6-1.74 8.58-1.74s5.82 .64 8.58 1.74l3.44 1.56c-2.98-2.26-6.56-3.56-10.38-3.56z"/>
+      <path fill="#34A853" d="M24 46c-5.94 0-10.92-1.96-14.56-5.32l7.14-5.54c1.96-1.32 4.46-2.12 7.42-2.12 5.72 0 10.58 3.86 11.88 9.26H40.8v-5.56c-2.78-3.86-7.34-6.28-12.46-6.28z"/>
     </svg>
     Continue with Google
   </a>
 );
 
 const Divider = () => (
-  <div className="relative text-slate-400 text-xs font-semibold mb-4 mt-2">
-    <span className="px-2 bg-white">Or continue with</span>
-    <div className="absolute inset-0 flex items-center">
-      <span className="w-full border-t border-slate-200"></span>
-    </div>
+  <div className="my-4 flex items-center">
+    <div className="flex-1 border-t border-slate-200"></div>
+    <span className="px-2 bg-white text-slate-400 text-xs font-semibold">Or continue with</span>
+    <div className="flex-1 border-t border-slate-200"></div>
   </div>
 );
 
