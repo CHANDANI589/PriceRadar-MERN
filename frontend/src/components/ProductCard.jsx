@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Heart, Star } from "lucide-react";
 import { formatINR } from "../utils/platforms";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useWishlist } from "../context/WishlistContext";
 import api from "../api/axios";
 import toast from "react-hot-toast";
 import SafeImage from "./SafeImage";
 
 const ProductCard = ({ product }) => {
   const { user } = useAuth();
+  const { increment, decrement } = useWishlist();
   const [wished, setWished] = useState(false);
 
   const discount =
@@ -29,19 +32,23 @@ const ProductCard = ({ product }) => {
       return;
     }
 
+    const willAdd = !wished;
+
+    // Optimistic UI: flip heart + count instantly, do NOT wait for the API
+    setWished(!wished);
+    if (willAdd) increment();
+    else decrement();
+
     try {
       await api.post(`/users/wishlist/${product._id}`);
-
-      setWished((w) => !w);
-
-      toast.success(
-        wished
-          ? "Removed from wishlist"
-          : "Saved to wishlist"
-      );
+      toast.success(willAdd ? "Saved to wishlist" : "Removed from wishlist");
     } catch (error) {
       console.error("Wishlist error:", error);
-      toast.error("Something went wrong");
+      // Revert optimistic update on failure
+      setWished(wished);
+      if (willAdd) decrement();
+      else increment();
+      toast.error(willAdd ? "Failed to save" : "Failed to remove from wishlist");
     }
   };
 
@@ -59,20 +66,26 @@ const ProductCard = ({ product }) => {
         />
 
         {/* WISHLIST */}
-        <button
+        <motion.button
           type="button"
           onClick={toggleWishlist}
-          className="absolute top-2 right-2 bg-white/90 backdrop-blur p-1.5 rounded-full shadow hover:scale-110 transition-transform"
+          whileTap={{ scale: 0.8 }}
+          className="absolute top-2 right-2 bg-white/90 backdrop-blur p-1.5 rounded-full shadow"
         >
-          <Heart
-            size={16}
-            className={
-              wished
-                ? "fill-coral text-coral"
-                : "text-slate-400"
-            }
-          />
-        </button>
+          <motion.span
+            animate={{ scale: wished ? 1.15 : 1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            className="inline-block"
+          >
+            <Heart
+              size={16}
+              className={`
+                transition-all duration-300
+                ${wished ? "fill-coral text-coral" : "text-slate-400"}
+              `}
+            />
+          </motion.span>
+        </motion.button>
 
         {/* DISCOUNT */}
         {discount > 0 && (

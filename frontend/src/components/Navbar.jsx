@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Search, ShoppingCart, Heart, User, LogOut, Menu, X, Radar } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 
 const Navbar = () => {
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const { totalItems } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -53,8 +55,19 @@ const Navbar = () => {
           <Link to="/search" className="text-white/80 hover:text-mustard text-sm transition-colors" title="Browse our catalog">
             Catalog
           </Link>
-          <Link to="/wishlist" className="text-white/90 hover:text-mustard transition-colors" title="Wishlist">
+          <Link
+            to="/wishlist"
+            className="text-white/90 hover:text-mustard transition-colors relative"
+            title="Wishlist"
+          >
             <Heart size={20} />
+            {wishlistCount > 0 && (
+              <span
+                className="absolute -top-1 -right-1 bg-coral text-white text-[10px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center"
+              >
+                {wishlistCount}
+              </span>
+            )}
           </Link>
           <Link to="/cart" className="relative text-white/90 hover:text-mustard transition-colors" title="Cart">
             <ShoppingCart size={20} />
