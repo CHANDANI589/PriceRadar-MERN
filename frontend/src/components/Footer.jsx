@@ -3,15 +3,14 @@ import { Radar } from "lucide-react";
 
 const Footer = () => (
   <footer className="bg-navy-dark text-white/70 mt-16">
-    <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-4 gap-4">
       <div>
         <div className="flex items-center gap-2 mb-3">
           <Radar className="text-mustard" size={22} />
           <span className="font-display font-bold text-white text-lg">PriceRadar</span>
         </div>
-        <p className="text-sm leading-relaxed">
-          India's smartest price-comparison shopping platform. Real-time live search powered by
-          Google Shopping, plus our own catalog with checkout, alerts, and savings tracking.
+        <p className="text-sm line-clamp-2">
+          India's smartest price-comparison platform. Live prices via Google Shopping.
         </p>
       </div>
       <div>
@@ -34,30 +33,29 @@ const Footer = () => (
       </div>
       <div>
         <h4 className="text-white font-semibold mb-3 text-sm">Note</h4>
-        <p className="text-sm leading-relaxed">
-          Live Search results are real-time via Google Shopping (SerpApi). Catalog products use
-          simulated pricing for demonstration purposes.
+        <p className="text-sm">
+          Live prices via Google Shopping. Catalog prices are demo.
         </p>
       </div>
     </div>
     <div className="border-t border-white/10 py-4">
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2 text-xs">
-        <div className="flex gap-4 text-white/60">
+        <div className="flex gap-4 text-white/60 text-sm">
           <Link
             to="/privacy-policy"
             className="hover:text-white transition-colors"
           >
-            Privacy Policy
+            Privacy
           </Link>
           <Link
             to="/terms"
             className="hover:text-white transition-colors"
           >
-            Terms of Service
+            Terms
           </Link>
         </div>
-        <div className="text-white/70">
-          © {new Date().getFullYear()} PriceRadar. Built with the MERN stack.
+        <div className="text-white/70 text-xs">
+          © {new Date().getFullYear()} PriceRadar
         </div>
       </div>
     </div>
